@@ -5,6 +5,7 @@ body {
     margin: 0 auto;
     padding: 20px;
     background-color: #f5f5f5;
+    line-height: 1.6;
 }
 
 .container {
@@ -12,6 +13,12 @@ body {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
 }
 
 button {
@@ -22,8 +29,17 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin: 10px 0;
 }
 
 button:hover {
     background-color: #005a87;
+}
+
+#priceData {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 4px solid #007cba;
 }
