@@ -1,29 +1,26 @@
-<link rel="stylesheet" href="styles.css">
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Algo Trading Site</title>
-    <style>
-        body { font-family: Arial; text-align: center; padding: 50px; }
-        button { padding: 10px 20px; font-size: 16px; }
-        #priceData { margin-top: 20px; padding: 15px; background-color: #f0f0f0; }
-    </style>
+    <title> SUBBANNA Algo Trading Site</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to My Algo Trading Platform</h1>
-    <p>This is hosted on Cloudflare Pages!</p>
-    
-    <button onclick="fetchData()">Get Fake Price from Linode</button>
-    
-    <div id="priceData">
-        Click the button to see data from your backend.
+    <div class="container">
+        <h1>Welcome to My Algo Trading Platform</h1>
+        <p>This is hosted on Cloudflare Pages!</p>
+        
+        <button onclick="fetchData()">Get Fake Price from Linode</button>
+        
+        <div id="priceData">
+            Click the button to see data from your backend.
+        </div>
     </div>
 
     <script>
         // This JavaScript function will call your Linode backend
         async function fetchData() {
             try {
-                // REPLACE THIS URL LATER WITH YOUR LINODE SERVER'S IP/URL
+                // We'll update this URL later with your actual Linode IP
                 const response = await fetch('http://YOUR_LINODE_IP:3000/api/fake-price');
                 const data = await response.json();
                 
