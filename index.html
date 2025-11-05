@@ -3,131 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVS Algo - Algorithmic Trading Platform</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Algorithmic Trading Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .card h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .price-display {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #00ccff, #0099cc);
+            color: #000;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.4);
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #cccccc;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        .logs {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-time {
+            color: #00ff88;
+        }
+
+        .log-info {
+            color: #00ccff;
+        }
+
+        .log-success {
+            color: #00ff88;
+        }
+
+        .log-error {
+            color: #ff4444;
+        }
+
+        .chart-placeholder {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            color: #cccccc;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #cccccc;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-chart-line"></i>
-                <span>SVS Algo Trading</span>
-            </div>
-            <div class="nav-menu">
-                <a href="#dashboard" class="nav-link">Dashboard</a>
-                <a href="#trading" class="nav-link">Trading</a>
-                <a href="#strategies" class="nav-link">Strategies</a>
-                <a href="#backtesting" class="nav-link">Backtesting</a>
-                <a href="#account" class="nav-link">Account</a>
-            </div>
-            <div class="nav-auth">
-                <button class="btn-login" onclick="openLogin()">Login to ProStocks</button>
-            </div>
+    <div class="container">
+        <div class="header">
+            <h1>Algorithmic Trading Platform</h1>
+            <p>Advanced automated trading system with real-time analytics</p>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Advanced Algorithmic Trading Platform</h1>
-            <p>Connect to ProStocks Star API for paper trading and backtesting</p>
-            <div class="hero-buttons">
-                <button class="btn-primary" onclick="openLogin()">
-                    <i class="fas fa-play"></i> Start Trading
-                </button>
-                <button class="btn-secondary" onclick="scrollToFeatures()">
-                    <i class="fas fa-info-circle"></i> Learn More
-                </button>
-            </div>
+        <div class="price-display">
+            BTC/USD: <span id="currentPrice">$0.00</span>
         </div>
-    </section>
 
-    <!-- Trading Dashboard -->
-    <section id="dashboard" class="dashboard">
-        <div class="container">
-            <h2>Live Trading Dashboard</h2>
-            
-            <!-- Market Data Widget -->
-            <div class="widget-grid">
-                <div class="widget">
-                    <h3><i class="fas fa-wallet"></i> Portfolio Value</h3>
-                    <div class="widget-value" id="portfolioValue">₹0.00</div>
-                </div>
-                <div class="widget">
-                    <h3><i class="fas fa-chart-bar"></i> Today's P&L</h3>
-                    <div class="widget-value" id="todayPnl">₹0.00</div>
-                </div>
-                <div class="widget">
-                    <h3><i class="fas fa-exchange-alt"></i> Open Positions</h3>
-                    <div class="widget-value" id="openPositions">0</div>
-                </div>
-                <div class="widget">
-                    <h3><i class="fas fa-tasks"></i> Active Orders</h3>
-                    <div class="widget-value" id="activeOrders">0</div>
+        <div class="dashboard">
+            <div class="card">
+                <h3>Trading Chart</h3>
+                <div class="chart-placeholder" id="tradingChart">
+                    Trading Chart Integration Area
                 </div>
             </div>
 
-            <!-- Quick Order Panel -->
-            <div class="order-panel">
-                <h3>Quick Order</h3>
-                <div class="order-form">
-                    <select id="symbolSelect" class="form-input">
-                        <option value="">Select Symbol</option>
-                        <option value="RELIANCE">RELIANCE</option>
-                        <option value="TCS">TCS</option>
-                        <option value="INFY">INFY</option>
+            <div class="card">
+                <h3>Trading Controls</h3>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="executeTrade('buy')">BUY</button>
+                    <button class="btn btn-danger" onclick="executeTrade('sell')">SELL</button>
+                    <button class="btn btn-secondary" onclick="toggleTradingBot()">START BOT</button>
+                </div>
+
+                <div class="input-group">
+                    <label for="tradeAmount">Trade Amount (USD)</label>
+                    <input type="number" id="tradeAmount" value="100" min="10" step="10">
+                </div>
+
+                <div class="input-group">
+                    <label for="tradingPair">Trading Pair</label>
+                    <select id="tradingPair">
+                        <option value="BTC/USD">BTC/USD</option>
+                        <option value="ETH/USD">ETH/USD</option>
+                        <option value="ADA/USD">ADA/USD</option>
+                        <option value="DOT/USD">DOT/USD</option>
                     </select>
-                    <select id="orderType" class="form-input">
-                        <option value="BUY">BUY</option>
-                        <option value="SELL">SELL</option>
-                    </select>
-                    <input type="number" id="quantity" class="form-input" placeholder="Quantity" min="1">
-                    <input type="number" id="price" class="form-input" placeholder="Price" step="0.05">
-                    <button class="btn-buy" onclick="placeOrder()">Place Order</button>
                 </div>
-            </div>
 
-            <!-- Market Watch -->
-            <div class="market-watch">
-                <h3>Market Watch</h3>
-                <div class="market-table">
-                    <table id="marketData">
-                        <thead>
-                            <tr>
-                                <th>Symbol</th>
-                                <th>LTP</th>
-                                <th>Change</th>
-                                <th>Volume</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="marketDataBody">
-                            <!-- Market data will be populated here -->
-                        </tbody>
-                    </table>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="profitLoss">$0.00</div>
+                        <div class="stat-label">P&L</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="winRate">0%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="tradesCount">0</div>
+                        <div class="stat-label">Total Trades</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLogin()">&times;</span>
-            <h2>Connect to ProStocks Star API</h2>
-            <form id="prostocksLogin">
-                <div class="form-group">
-                    <label for="apiKey">API Key:</label>
-                    <input type="text" id="apiKey" class="form-input" placeholder="Enter your ProStocks API Key">
-                </div>
-                <div class="form-group">
-                    <label for="apiSecret">API Secret:</label>
-                    <input type="password" id="apiSecret" class="form-input" placeholder="Enter your API Secret">
-                </div>
-                <button type="submit" class="btn-primary">Connect & Login</button>
-            </form>
+        <div class="card">
+            <h3>Trading Logs</h3>
+            <div class="logs" id="tradingLogs">
+                <div class="log-entry"><span class="log-time">[00:00:00]</span> <span class="log-info">System initialized</span></div>
+            </div>
         </div>
     </div>
 
