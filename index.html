@@ -1,40 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title> SUBBANNA Algo Trading Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVS Algo - Algorithmic Trading Platform</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to My Algo Trading Platform</h1>
-        <p>This is hosted on Cloudflare Pages!</p>
-        
-        <button onclick="fetchData()">Get Fake Price from Linode</button>
-        
-        <div id="priceData">
-            Click the button to see data from your backend.
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-chart-line"></i>
+                <span>SVS Algo Trading</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#trading" class="nav-link">Trading</a>
+                <a href="#strategies" class="nav-link">Strategies</a>
+                <a href="#backtesting" class="nav-link">Backtesting</a>
+                <a href="#account" class="nav-link">Account</a>
+            </div>
+            <div class="nav-auth">
+                <button class="btn-login" onclick="openLogin()">Login to ProStocks</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Advanced Algorithmic Trading Platform</h1>
+            <p>Connect to ProStocks Star API for paper trading and backtesting</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="openLogin()">
+                    <i class="fas fa-play"></i> Start Trading
+                </button>
+                <button class="btn-secondary" onclick="scrollToFeatures()">
+                    <i class="fas fa-info-circle"></i> Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Dashboard -->
+    <section id="dashboard" class="dashboard">
+        <div class="container">
+            <h2>Live Trading Dashboard</h2>
+            
+            <!-- Market Data Widget -->
+            <div class="widget-grid">
+                <div class="widget">
+                    <h3><i class="fas fa-wallet"></i> Portfolio Value</h3>
+                    <div class="widget-value" id="portfolioValue">₹0.00</div>
+                </div>
+                <div class="widget">
+                    <h3><i class="fas fa-chart-bar"></i> Today's P&L</h3>
+                    <div class="widget-value" id="todayPnl">₹0.00</div>
+                </div>
+                <div class="widget">
+                    <h3><i class="fas fa-exchange-alt"></i> Open Positions</h3>
+                    <div class="widget-value" id="openPositions">0</div>
+                </div>
+                <div class="widget">
+                    <h3><i class="fas fa-tasks"></i> Active Orders</h3>
+                    <div class="widget-value" id="activeOrders">0</div>
+                </div>
+            </div>
+
+            <!-- Quick Order Panel -->
+            <div class="order-panel">
+                <h3>Quick Order</h3>
+                <div class="order-form">
+                    <select id="symbolSelect" class="form-input">
+                        <option value="">Select Symbol</option>
+                        <option value="RELIANCE">RELIANCE</option>
+                        <option value="TCS">TCS</option>
+                        <option value="INFY">INFY</option>
+                    </select>
+                    <select id="orderType" class="form-input">
+                        <option value="BUY">BUY</option>
+                        <option value="SELL">SELL</option>
+                    </select>
+                    <input type="number" id="quantity" class="form-input" placeholder="Quantity" min="1">
+                    <input type="number" id="price" class="form-input" placeholder="Price" step="0.05">
+                    <button class="btn-buy" onclick="placeOrder()">Place Order</button>
+                </div>
+            </div>
+
+            <!-- Market Watch -->
+            <div class="market-watch">
+                <h3>Market Watch</h3>
+                <div class="market-table">
+                    <table id="marketData">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>LTP</th>
+                                <th>Change</th>
+                                <th>Volume</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marketDataBody">
+                            <!-- Market data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogin()">&times;</span>
+            <h2>Connect to ProStocks Star API</h2>
+            <form id="prostocksLogin">
+                <div class="form-group">
+                    <label for="apiKey">API Key:</label>
+                    <input type="text" id="apiKey" class="form-input" placeholder="Enter your ProStocks API Key">
+                </div>
+                <div class="form-group">
+                    <label for="apiSecret">API Secret:</label>
+                    <input type="password" id="apiSecret" class="form-input" placeholder="Enter your API Secret">
+                </div>
+                <button type="submit" class="btn-primary">Connect & Login</button>
+            </form>
         </div>
     </div>
 
-    <script>
-        // This JavaScript function will call your Linode backend
-        async function fetchData() {
-            try {
-                // We'll update this URL later with your actual Linode IP
-                const response = await fetch('http://YOUR_LINODE_IP:3000/api/fake-price');
-                const data = await response.json();
-                
-                document.getElementById('priceData').innerHTML = `
-                    <h3>Backend Response:</h3>
-                    <p>Stock: ${data.stock}</p>
-                    <p>Price: $${data.price}</p>
-                    <p><em>This data came from your Linode server!</em></p>
-                `;
-            } catch (error) {
-                document.getElementById('priceData').innerHTML = `<p style="color: red;">Failed to connect to backend. Is your Linode server running?</p>`;
-                console.error("Error:", error);
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
