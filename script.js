@@ -1,224 +1,213 @@
-// ProStocks API Configuration
-const PROSTOCKS_CONFIG = {
-    baseUrl: 'https://staruat.prostocks.com',
-    endpoints: {
-        login: '/api/v1/login',
-        orders: '/api/v1/orders',
-        positions: '/api/v1/positions',
-        holdings: '/api/v1/holdings',
-        marketData: '/api/v1/marketdata'
-    }
-};
-
-// Global State
-let isAuthenticated = false;
-let userData = null;
-let marketData = [];
-
-// DOM Elements
-const loginModal = document.getElementById('loginModal');
-const prostocksLogin = document.getElementById('prostocksLogin');
-const portfolioValue = document.getElementById('portfolioValue');
-const todayPnl = document.getElementById('todayPnl');
-const openPositions = document.getElementById('openPositions');
-const activeOrders = document.getElementById('activeOrders');
-const marketDataBody = document.getElementById('marketDataBody');
-
-// Modal Functions
-function openLogin() {
-    loginModal.style.display = 'block';
-}
-
-function closeLogin() {
-    loginModal.style.display = 'none';
-}
-
-// ProStocks Authentication
-prostocksLogin.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const apiKey = document.getElementById('apiKey').value;
-    const apiSecret = document.getElementById('apiSecret').value;
-    
-    try {
-        const response = await authenticateWithProStocks(apiKey, apiSecret);
+// Algorithmic Trading Platform - Main JavaScript
+class TradingBot {
+    constructor() {
+        this.isRunning = false;
+        this.currentPrice = 0;
+        this.profitLoss = 0;
+        this.totalTrades = 0;
+        this.successfulTrades = 0;
+        this.tradeHistory = [];
+        this.priceUpdateInterval = null;
         
-        if (response.success) {
-            isAuthenticated = true;
-            userData = response.data;
-            closeLogin();
-            initializeTrading();
-            showNotification('Successfully connected to ProStocks!', 'success');
-        } else {
-            showNotification('Authentication failed. Please check your credentials.', 'error');
-        }
-    } catch (error) {
-        showNotification('Connection error. Please try again.', 'error');
-        console.error('Authentication error:', error);
+        this.initializeTrading();
     }
-});
 
-// API Integration Functions
-async function authenticateWithProStocks(apiKey, apiSecret) {
-    // Placeholder for actual ProStocks authentication
-    // You'll need to implement the actual API call based on ProStocks documentation
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                success: true,
-                data: {
-                    userId: 'demo_user',
-                    name: 'Demo Trader',
-                    balance: 100000
-                }
-            });
+    initializeTrading() {
+        this.logMessage('Algorithmic Trading Platform initialized', 'info');
+        this.startPriceUpdates();
+        this.updateStats();
+        
+        // Simulate initial market data
+        this.simulateMarketData();
+    }
+
+    startPriceUpdates() {
+        this.priceUpdateInterval = setInterval(() => {
+            this.updatePrice();
         }, 1000);
-    });
-}
-
-// Trading Functions
-async function placeOrder() {
-    if (!isAuthenticated) {
-        showNotification('Please login to ProStocks first', 'warning');
-        openLogin();
-        return;
     }
 
-    const symbol = document.getElementById('symbolSelect').value;
-    const orderType = document.getElementById('orderType').value;
-    const quantity = document.getElementById('quantity').value;
-    const price = document.getElementById('price').value;
-
-    if (!symbol || !quantity || !price) {
-        showNotification('Please fill all order details', 'warning');
-        return;
+    updatePrice() {
+        // Simulate realistic price movement with random walk
+        const volatility = 50; // Higher volatility for more realistic movement
+        const change = (Math.random() - 0.5) * volatility;
+        const drift = 0.1; // Slight upward drift
+        
+        this.currentPrice = Math.max(45000, this.currentPrice + change + drift);
+        
+        document.getElementById('currentPrice').textContent = `$${this.currentPrice.toFixed(2)}`;
+        
+        // Update chart placeholder with current price
+        this.updateChartPlaceholder();
     }
 
-    try {
-        // Placeholder for actual order placement
-        const order = {
-            symbol,
-            orderType,
-            quantity: parseInt(quantity),
-            price: parseFloat(price),
-            timestamp: new Date().toISOString()
-        };
-
-        showNotification(`Order placed: ${orderType} ${quantity} ${symbol} @ ${price}`, 'success');
-        
-        // Reset form
-        document.getElementById('quantity').value = '';
-        document.getElementById('price').value = '';
-        
-        // Update dashboard
-        updateDashboard();
-        
-    } catch (error) {
-        showNotification('Order placement failed', 'error');
-        console.error('Order error:', error);
-    }
-}
-
-// Dashboard Functions
-function initializeTrading() {
-    updateDashboard();
-    startMarketDataStream();
-    setInterval(updateDashboard, 30000); // Update every 30 seconds
-}
-
-function updateDashboard() {
-    // Update with real data from ProStocks API
-    portfolioValue.textContent = `₹${(Math.random() * 1000000).toFixed(2)}`;
-    todayPnl.textContent = `₹${(Math.random() * 5000 - 2500).toFixed(2)}`;
-    openPositions.textContent = Math.floor(Math.random() * 10);
-    activeOrders.textContent = Math.floor(Math.random() * 5);
-}
-
-function startMarketDataStream() {
-    // Simulate market data updates
-    setInterval(() => {
-        updateMarketData();
-    }, 2000);
-}
-
-function updateMarketData() {
-    const symbols = ['RELIANCE', 'TCS', 'INFY', 'HDFC', 'ICICIBANK'];
-    const marketDataHTML = symbols.map(symbol => {
-        const ltp = (Math.random() * 5000 + 1000).toFixed(2);
-        const change = (Math.random() * 100 - 50).toFixed(2);
-        const changePercent = ((change / ltp) * 100).toFixed(2);
-        const volume = Math.floor(Math.random() * 1000000);
-        
-        return `
-            <tr>
-                <td><strong>${symbol}</strong></td>
-                <td>₹${ltp}</td>
-                <td class="${change >= 0 ? 'positive' : 'negative'}">
-                    ${change >= 0 ? '+' : ''}${change} (${changePercent}%)
-                </td>
-                <td>${volume.toLocaleString()}</td>
-                <td>
-                    <button class="btn-buy" onclick="quickBuy('${symbol}')">Buy</button>
-                    <button class="btn-sell" onclick="quickSell('${symbol}')">Sell</button>
-                </td>
-            </tr>
+    updateChartPlaceholder() {
+        const chart = document.getElementById('tradingChart');
+        chart.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 1.2rem; margin-bottom: 10px; color: #00ff88;">Live Trading Chart</div>
+                <div style="font-size: 2rem; font-weight: bold; margin-bottom: 10px;">$${this.currentPrice.toFixed(2)}</div>
+                <div style="color: #cccccc;">Chart visualization would be integrated here</div>
+                <div style="margin-top: 20px; font-size: 0.9rem; color: #888;">
+                    Next: Integrate with TradingView, Chart.js, or other charting library
+                </div>
+            </div>
         `;
-    }).join('');
-    
-    marketDataBody.innerHTML = marketDataHTML;
-}
+    }
 
-function quickBuy(symbol) {
-    document.getElementById('symbolSelect').value = symbol;
-    document.getElementById('orderType').value = 'BUY';
-    document.getElementById('quantity').focus();
-}
-
-function quickSell(symbol) {
-    document.getElementById('symbolSelect').value = symbol;
-    document.getElementById('orderType').value = 'SELL';
-    document.getElementById('quantity').focus();
-}
-
-// Utility Functions
-function showNotification(message, type) {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        color: white;
-        font-weight: 500;
-        z-index: 3000;
-        animation: slideIn 0.3s ease;
-        ${type === 'success' ? 'background: #27ae60;' : ''}
-        ${type === 'error' ? 'background: #e74c3c;' : ''}
-        ${type === 'warning' ? 'background: #f39c12;' : ''}
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Remove after 3 seconds
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
-
-// Initialize when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    updateMarketData();
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        if (event.target === loginModal) {
-            closeLogin();
+    executeTrade(type) {
+        if (!this.isRunning && type !== 'manual') {
+            this.logMessage('Trading bot is not running. Please start the bot first.', 'error');
+            return;
         }
-    });
+
+        const amount = parseFloat(document.getElementById('tradeAmount').value) || 100;
+        const pair = document.getElementById('tradingPair').value;
+        
+        // Simulate trade execution
+        const tradePrice = this.currentPrice;
+        const simulatedOutcome = Math.random() > 0.4; // 60% success rate for simulation
+        
+        this.totalTrades++;
+        
+        if (simulatedOutcome) {
+            this.successfulTrades++;
+            const profit = type === 'buy' ? amount * 0.02 : amount * 0.015; // 2% profit for buy, 1.5% for sell
+            this.profitLoss += profit;
+            
+            this.logMessage(`${type.toUpperCase()} trade executed: ${amount} USD of ${pair} at $${tradePrice.toFixed(2)} - Profit: $${profit.toFixed(2)}`, 'success');
+        } else {
+            const loss = amount * 0.01; // 1% loss
+            this.profitLoss -= loss;
+            
+            this.logMessage(`${type.toUpperCase()} trade executed: ${amount} USD of ${pair} at $${tradePrice.toFixed(2)} - Loss: $${loss.toFixed(2)}`, 'error');
+        }
+        
+        // Add to trade history
+        this.tradeHistory.unshift({
+            type: type,
+            pair: pair,
+            amount: amount,
+            price: tradePrice,
+            timestamp: new Date(),
+            outcome: simulatedOutcome ? 'profit' : 'loss'
+        });
+        
+        this.updateStats();
+        
+        // Keep only last 50 trades in history
+        if (this.tradeHistory.length > 50) {
+            this.tradeHistory.pop();
+        }
+    }
+
+    toggleTradingBot() {
+        this.isRunning = !this.isRunning;
+        
+        const button = document.querySelector('button[onclick="toggleTradingBot()"]');
+        
+        if (this.isRunning) {
+            button.textContent = 'STOP BOT';
+            button.className = 'btn btn-danger';
+            this.logMessage('Algorithmic trading bot STARTED - Automated trading enabled', 'success');
+            
+            // Start automated trading
+            this.startAutomatedTrading();
+        } else {
+            button.textContent = 'START BOT';
+            button.className = 'btn btn-secondary';
+            this.logMessage('Algorithmic trading bot STOPPED', 'error');
+            
+            // Stop automated trading
+            this.stopAutomatedTrading();
+        }
+    }
+
+    startAutomatedTrading() {
+        // Simulate automated trading decisions
+        this.autoTradeInterval = setInterval(() => {
+            if (this.isRunning) {
+                // Simple momentum strategy simulation
+                const decision = Math.random() > 0.5 ? 'buy' : 'sell';
+                this.executeTrade(decision);
+            }
+        }, 5000); // Trade every 5 seconds
+    }
+
+    stopAutomatedTrading() {
+        if (this.autoTradeInterval) {
+            clearInterval(this.autoTradeInterval);
+        }
+    }
+
+    updateStats() {
+        document.getElementById('profitLoss').textContent = `$${this.profitLoss.toFixed(2)}`;
+        document.getElementById('tradesCount').textContent = this.totalTrades;
+        
+        const winRate = this.totalTrades > 0 ? (this.successfulTrades / this.totalTrades) * 100 : 0;
+        document.getElementById('winRate').textContent = `${winRate.toFixed(1)}%`;
+        
+        // Color code P&L
+        const pnlElement = document.getElementById('profitLoss');
+        pnlElement.style.color = this.profitLoss >= 0 ? '#00ff88' : '#ff4444';
+    }
+
+    logMessage(message, type = 'info') {
+        const logs = document.getElementById('tradingLogs');
+        const timestamp = new Date().toLocaleTimeString();
+        
+        const typeClass = `log-${type}`;
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry';
+        logEntry.innerHTML = `<span class="log-time">[${timestamp}]</span> <span class="${typeClass}">${message}</span>`;
+        
+        logs.insertBefore(logEntry, logs.firstChild);
+        
+        // Keep only last 100 log entries
+        while (logs.children.length > 100) {
+            logs.removeChild(logs.lastChild);
+        }
+    }
+
+    simulateMarketData() {
+        // Initialize with realistic price
+        this.currentPrice = 50000 + (Math.random() - 0.5) * 1000;
+        this.updatePrice();
+    }
+
+    // Advanced trading strategies can be added here
+    momentumStrategy() {
+        // Implement momentum-based trading logic
+    }
+
+    meanReversionStrategy() {
+        // Implement mean reversion trading logic
+    }
+}
+
+// Initialize trading bot when page loads
+let tradingBot;
+
+document.addEventListener('DOMContentLoaded', function() {
+    tradingBot = new TradingBot();
 });
+
+// Global functions for HTML onclick handlers
+function executeTrade(type) {
+    tradingBot.executeTrade(type);
+}
+
+function toggleTradingBot() {
+    tradingBot.toggleTradingBot();
+}
+
+// Utility function for manual trading
+function manualTrade() {
+    const type = confirm('Execute BUY trade? Click OK for BUY, Cancel for SELL') ? 'buy' : 'sell';
+    executeTrade(type);
+}
+
+// Export for potential module use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { TradingBot, executeTrade, toggleTradingBot };
+}
