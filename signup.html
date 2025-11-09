@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVS ALGO - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">SVS – ALGO</h1>
+            <div class="auth-links">
+                <a href="index.html">Login</a>
+                <a href="signup.html" class="active">Sign up</a>
+            </div>
+        </div>
+
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Create Your Account</h2>
+                <p class="signup-subtitle">One-time registration process</p>
+                
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">E-mail Address</label>
+                        <input type="email" id="signupEmail" name="email" required placeholder="Enter your e-mail">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" name="password" required placeholder="Create a password">
+                        <small class="password-hint">Minimum 8 characters with letters and numbers</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number (Optional)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                    </div>
+
+                    <div class="terms-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" class="signup-btn">Create Account</button>
+                </form>
+
+                <div class="login-redirect">
+                    <p>Already have an account? <a href="index.html">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            if(password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            if(!terms) {
+                alert('Please agree to the Terms of Service');
+                return;
+            }
+
+            // Simulate signup process
+            alert('Account created successfully! Please check your email for verification.');
+            // Redirect to login page after successful signup
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+
+        // Password strength check
+        document.getElementById('signupPassword').addEventListener('input', function() {
+            const password = this.value;
+            const hint = this.parentElement.querySelector('.password-hint');
+            
+            if(password.length > 0 && password.length < 8) {
+                hint.style.color = '#ff4444';
+            } else if(password.length >= 8) {
+                hint.style.color = '#00ff88';
+            }
+        });
+    </script>
+</body>
+</html>
