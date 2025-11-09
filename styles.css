@@ -1,276 +1,98 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Background Image Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(135deg, rgba(12, 12, 12, 0.9) 0%, rgba(26, 26, 46, 0.9) 50%, rgba(22, 33, 62, 0.9) 100%),
+                url('dsfa.png') center/cover no-repeat fixed;
     color: #ffffff;
     min-height: 100vh;
     line-height: 1.6;
+    position: relative;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+/* Alternative background if image doesn't load */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    z-index: -2;
 }
 
-/* Header Styles */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 40px;
-}
-
-.logo {
-    font-size: 2rem;
-    font-weight: bold;
-    background: linear-gradient(45deg, #00ff88, #00ccff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.auth-links {
-    display: flex;
-    gap: 30px;
-}
-
-.auth-links a {
-    color: #cccccc;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-}
-
-.auth-links a.active {
-    background: linear-gradient(45deg, #00ff88, #00cc6a);
-    color: #000;
-}
-
-.auth-links a:hover:not(.active) {
-    color: #00ff88;
-}
-
-/* Auth Container */
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 70vh;
-}
-
+/* Make auth cards more transparent to show background */
 .auth-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
     padding: 40px;
     width: 100%;
     max-width: 450px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
+/* Enhance text readability over background */
 .auth-card h2 {
     text-align: center;
     margin-bottom: 30px;
     color: #00ff88;
     font-size: 1.8rem;
-}
-
-.signup-subtitle {
-    text-align: center;
-    color: #cccccc;
-    margin-bottom: 30px;
-    font-size: 0.9rem;
-}
-
-/* Form Styles */
-.form-group {
-    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: #cccccc;
+    color: #e0e0e0;
     font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Make inputs more transparent */
 .form-group input {
     width: 100%;
     padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     font-size: 1rem;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .form-group input:focus {
     outline: none;
     border-color: #00ff88;
-    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.3);
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.form-group input::placeholder {
-    color: #888888;
-}
-
-/* OTP Container */
-.otp-container {
+/* Enhanced header with transparency */
+.header {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
     align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px 30px;
 }
 
-.otp-container input {
-    flex: 1;
-}
-
-.resend-btn {
-    padding: 15px 20px;
-    background: rgba(0, 204, 255, 0.2);
-    border: 1px solid rgba(0, 204, 255, 0.3);
-    color: #00ccff;
-    border-radius: 10px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-}
-
-.resend-btn:hover {
-    background: rgba(0, 204, 255, 0.3);
-}
-
-.otp-note {
-    color: #888;
-    font-size: 0.8rem;
-    margin-top: 5px;
-    display: block;
-}
-
-/* Button Styles */
-.login-btn, .signup-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(45deg, #00ff88, #00cc6a);
-    border: none;
-    border-radius: 10px;
-    color: #000;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.login-btn:hover, .signup-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
-}
-
-/* Additional Links */
-.forgot-password {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.forgot-password a {
-    color: #00ccff;
-    text-decoration: none;
-}
-
-.forgot-password a:hover {
-    text-decoration: underline;
-}
-
-.login-redirect {
-    text-align: center;
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.login-redirect a {
-    color: #00ff88;
-    text-decoration: none;
-}
-
-.login-redirect a:hover {
-    text-decoration: underline;
-}
-
-/* Terms Checkbox */
-.terms-group {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.terms-group input[type="checkbox"] {
-    width: auto;
-    margin-top: 5px;
-}
-
-.terms-group label {
-    color: #cccccc;
-    font-size: 0.9rem;
-    margin-bottom: 0;
-}
-
-.terms-group a {
-    color: #00ccff;
-    text-decoration: none;
-}
-
-.terms-group a:hover {
-    text-decoration: underline;
-}
-
-.password-hint {
-    color: #888;
-    font-size: 0.8rem;
-    margin-top: 5px;
-    display: block;
-}
-
-/* Responsive Design */
+/* Responsive background adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    .header {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-    
-    .auth-links {
-        justify-content: center;
+    body {
+        background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 46, 0.95) 50%, rgba(22, 33, 62, 0.95) 100%),
+                    url('dsfa.png') center/cover no-repeat fixed;
     }
     
     .auth-card {
-        padding: 30px 20px;
-        margin: 20px;
-    }
-    
-    .otp-container {
-        flex-direction: column;
-    }
-    
-    .resend-btn {
-        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
     }
 }
