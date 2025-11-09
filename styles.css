@@ -1,98 +1,19 @@
-/* Background Image Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, rgba(12, 12, 12, 0.9) 0%, rgba(26, 26, 46, 0.9) 50%, rgba(22, 33, 62, 0.9) 100%),
-                url('dsfa.png') center/cover no-repeat fixed;
+    background: url('dsfa.png') center/cover no-repeat fixed;
     color: #ffffff;
     min-height: 100vh;
     line-height: 1.6;
-    position: relative;
 }
 
-/* Alternative background if image doesn't load */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-    z-index: -2;
-}
-
-/* Make auth cards more transparent to show background */
+/* Darken auth cards for better readability */
 .auth-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 40px;
     width: 100%;
     max-width: 450px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Enhance text readability over background */
-.auth-card h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #00ff88;
-    font-size: 1.8rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #e0e0e0;
-    font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* Make inputs more transparent */
-.form-group input {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: #00ff88;
-    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.3);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Enhanced header with transparency */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 40px;
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 20px 30px;
-}
-
-/* Responsive background adjustments */
-@media (max-width: 768px) {
-    body {
-        background: linear-gradient(135deg, rgba(12, 12, 12, 0.95) 0%, rgba(26, 26, 46, 0.95) 50%, rgba(22, 33, 62, 0.95) 100%),
-                    url('dsfa.png') center/cover no-repeat fixed;
-    }
-    
-    .auth-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-    }
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
